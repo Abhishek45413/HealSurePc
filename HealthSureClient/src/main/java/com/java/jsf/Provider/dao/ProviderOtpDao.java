@@ -1,14 +1,22 @@
 package com.java.jsf.Provider.dao;
 
-import java.util.List;
+import java.sql.SQLException;
 
 import com.java.jsf.Provider.model.ProviderOtp;
 
+
 public interface ProviderOtpDao {
-	void saveOtp(ProviderOtp otp) throws Exception;
-    ProviderOtp getLatestOtpByProviderId(String providerId) throws Exception;
-    List<ProviderOtp> getAllOtpsByProviderId(String providerId) throws Exception;
-    void deleteOtp(int otpId) throws Exception;
-    boolean validateOtp(String providerId, String otpCode) throws Exception;
+
+	 // ✅ Insert a new OTP record
+    public String insertOtp(ProviderOtp otp) throws ClassNotFoundException, SQLException;
+
+    // ✅ Verify if OTP is correct for a given provider
+    public String verifyOtp(String providerId, String otpCode) throws ClassNotFoundException, SQLException;
+
+    // ✅  Get the latest OTP for a provider (for resend or display)
+    public ProviderOtp getLatestOtpByProviderId(String providerId) throws ClassNotFoundException, SQLException;
+
+    // ✅  Mark OTP as verified
+    public String markOtpAsVerified(int otpId) throws ClassNotFoundException, SQLException;
 
 }

@@ -1,54 +1,106 @@
 package com.java.jsf.Provider.Controller;
 
-import java.util.Date;
-import java.util.List;
+import java.sql.SQLException;
 
 import com.java.jsf.Provider.dao.ProviderOtpDao;
+import com.java.jsf.Provider.daoImpl.ProviderDaoImpl;
 import com.java.jsf.Provider.daoImpl.ProviderOtpDaoImpl;
 import com.java.jsf.Provider.model.ProviderOtp;
-import com.java.jsf.Provider.model.ProviderType;
 
 public class ProviderOtpController {
-	  private ProviderOtp providerOtp = new ProviderOtp();
-	    private List<ProviderOtp> providerOtpList;
+	private String providerId;
+    private String otpCode;
+    private String message;
+    private ProviderOtp latestOtp;
 
-	    private ProviderOtpDao providerOtpDao = new ProviderOtpDaoImpl();
+    private ProviderOtpDao providerOtpDao = new ProviderOtpDaoImpl();
 
-	 // Generate and store a new OTP for a provider
-	    public String generateOtp(String providerId,ProviderType providerType, String otpCode, Date expiryTime) throws Exception {
-	        providerOtp.setProviderId(providerId);
-	        providerOtp.setProviderType(providerType);
-	        providerOtp.setOtpCode(otpCode);
-	        providerOtp.setExpiresAt(expiryTime);
-	        providerOtpDao.saveOtp(providerOtp);
-	        providerOtp = new ProviderOtp(); // reset after saving
-	        return "otp_generated";  // must match a navigation case
-	    }
+    private ProviderOtp otp = new ProviderOtp();
 
-	 // Get all OTPs
-	    public List<ProviderOtp> getOtpList() throws Exception {
-	        if (providerOtpList == null) {
-	            providerOtpList = providerOtpDao.getAllOtpsByProviderId(null);
-	        }
-	        return providerOtpList;
-	    }
+    // ✅ Method to Insert and Send OTP
+    public String sendOtp() {
+        try {
+            String generatedOtp = new ProviderDaoImpl().generateProviderId();
+            otp.setProviderId(providerId);
+            otp.setOtpCode(generatedOtp);
 
-	    // Verify OTP for a provider
-	    public boolean verifyOtp(String providerId, String inputOtp) throws Exception {
-	        ProviderOtp storedOtp = providerOtpDao.getLatestOtpByProviderId(providerId);
-	        if (storedOtp != null && storedOtp.getOtpCode().equals(inputOtp)
-	                && storedOtp.getExpiresAt().after(new Date(System.currentTimeMillis()))) {
-	            return true;
-	        }
-	        return false;
-	    }
+            message = providerOtpDao.insertOtp(otp);
+        } catch (ClassNotFoundException | SQLException e) {
+            e.printStackTrace();
+            message = "Error sending OTP: " + e.getMessage();
+        }
+        return "OtpSent";  // Navigation outcome (page name without extension)
+    }
 
-	    public ProviderOtp getOtp() {
-	        return providerOtp;
-	    }
+    // ✅ Method to Verify OTP
+    public String verifyOtp() {
+        try {
+            message = providerOtpDao.verifyOtp(providerId, otpCode);
+        } catch (ClassNotFoundException | SQLException e) {
+            e.printStackTrace();
+            message = "Error verifying OTP: " + e.getMessage();
+        }
+        return "OtpVerified";  // Navigation outcome
+    }
 
-	    public void setOtp(ProviderOtp otp) {
-	        this.providerOtp = otp;
-	    }
+    // ✅ Method to Get Latest OTP for Provider
+    public String getLatestOtp() {
+        try {
+            latestOtp = providerOtpDao.getLatestOtpByProviderId(providerId);
+            if (latestOtp != null) {
+                message = "Latest OTP: " + latestOtp.getOtpCode();
+            } else {
+                message = "No OTP found.";
+            }
+        } catch (ClassNotFoundException | SQLException e) {
+            e.printStackTrace();
+            message = "Error fetching OTP: " + e.getMessage();
+        }
+        return "LatestOtp";  // Navigation outcome
+    }
 
+    // ✅ Method to Mark OTP as Verified Manually
+    public String markOtpAsVerified(int otpId) {
+        try {
+            message = providerOtpDao.markOtpAsVerified(otpId);
+        } catch (ClassNotFoundException | SQLException e) {
+            e.printStackTrace();
+            message = "Error marking OTP: " + e.getMessage();
+        }
+        return "OtpMarked";  // Navigation outcome
+    }
+
+    // ===== Getters and Setters =====
+
+    public String getProviderId() {
+        return providerId;
+    }
+
+    public void setProviderId(String providerId) {
+        this.providerId = providerId;
+    }
+
+    public String getOtpCode() {
+        return otpCode;
+    }
+
+    public void setOtpCode(String otpCode) {
+        this.otpCode = otpCode;
+    }
+
+    public String getMessage() {
+        return message;
+    }
+
+    public ProviderOtp getOtp() {
+        return otp;
+    }
+
+    public void setOtp(ProviderOtp otp) {
+        this.otp = otp;
+    }
+
+    public ProviderOtp getLatestOtpDetails() {
+        return latestOtp;
+    }
 }

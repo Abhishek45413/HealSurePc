@@ -80,7 +80,7 @@
             seconds--;
             setTimeout(countdown, 1000);
         } else {
-            window.location.href = 'login.jsf';
+            window.location.href = 'Login.jsf';
         }
     }
 
@@ -89,12 +89,13 @@
 
 </head>
 <body>
+<h:form>
     <h:panelGroup layout="block" styleClass="success-container">
         <div class="success-icon">✅</div>
         <h2>Registration Successful!</h2>
         <p>Thank you for signing up. Your Provider account has been submitted for approval.</p>
 
-        <h:commandButton value="Go to Login Page" action="login.jsf" styleClass="login-link" />
+        <h:commandButton value="Go to Login Page" action="Login.jsp" styleClass="login-link" />
 
         <p class="timer-text">
            Redirecting to login in <span id="timer">15</span> seconds...<br/>
@@ -102,6 +103,7 @@
         </p>
         
     </h:panelGroup>
+    </h:form>
 </body>
 </html>
 </f:view>

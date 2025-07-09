@@ -138,11 +138,7 @@
         </div>
 
         <div class="signup-link">
-            Don't have an account? <h:outputLink value="providerSignUp.jsf">Sign Up</h:outputLink>
-        </div>
-
-        <div class="ignore-link">
-            <h:commandButton value="Ignore" action="HomePage.jsp" styleClass="ignore-button" />
+            Don't have an account? <h:outputLink value="SignUp.jsf">Sign Up</h:outputLink>
         </div>
 
     </h:form>
