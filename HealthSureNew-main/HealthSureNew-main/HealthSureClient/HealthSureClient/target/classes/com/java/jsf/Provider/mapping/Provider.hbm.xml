@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping package="com.java.jsf.Provider.model">
+    <class name="Provider" table="provider">
+        <id name="providerId" column="provider_id" type="string">
+            <generator class="assigned"/>
+            
+        </id>
+
+        <property name="providerName" column="provider_name"/>
+        <property name="hospitalName" column="hospital_name"/>
+        <property name="telephone" column="telephone" type="string"/>
+        <property name="email"/>
+        <property name="address"/>
+        <property name="city"/>
+        <property name="state"/>
+        <property name="zipcode"/>
+        <property name="createdAt" column="created_at" type="timestamp" insert = "false" update = "false"/>
+        
+       <property name="status" not-null="true">
+          <column name="status"/>
+              <type name="org.hibernate.type.EnumType">
+                <param name="enumClass">com.java.jsf.Provider.model.LoginStatus</param>
+                <param name="useNamed">true</param>
+              </type>
+       </property>
+           
+    </class>
+    
+    <query name="ProviderId">
+
+        SELECT MAX(providerId) FROM Provider
+</query>
+</hibernate-mapping>

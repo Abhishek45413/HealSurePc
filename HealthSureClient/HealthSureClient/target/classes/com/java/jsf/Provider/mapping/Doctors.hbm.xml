@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping package="com.java.jsf.Provider.model">
+
+    <class name="Doctors" table="doctors">
+
+        <!-- Primary key -->
+        <id name="doctorId" column="doctor_id" type="string">
+            <generator class="assigned"/>
+        </id>
+
+        <!-- Foreign key to Provider -->
+        <many-to-one name="provider" class="com.java.jsf.Provider.model.Provider" column="provider_id" not-null="true" />
+
+        <!-- Doctor details -->
+        <property name="doctorName" column="doctor_name" type="string" not-null="true"/>
+        <property name="qualification" column="qualification" type="string" not-null="true"/>
+        <property name="specialization" column="specialization" type="string" not-null="true"/>
+        <property name="licenseNo" column="license_no" type="string" not-null="true"/>
+        <property name="email" column="email" type="string"/>
+        <property name="address" column="address" type="string"/>
+
+        <!-- Gender (ENUM) -->
+        <property name="gender" not-null="false">
+            <column name="gender"/>
+            <type name="org.hibernate.type.EnumType">
+                <param name="enumClass">com.java.jsf.Provider.model.Gender</param>
+                <param name="useNamed">true</param>
+            </type>
+        </property>
+
+        <!-- Doctor Type (ENUM) -->
+        <property name="type" not-null="false">
+            <column name="type"/>
+            <type name="org.hibernate.type.EnumType">
+                <param name="enumClass">com.java.jsf.Provider.model.DoctorType</param>
+                <param name="useNamed">true</param>
+            </type>
+        </property>
+
+        <!-- Doctor Status (ENUM) -->
+        <property name="status" not-null="true">
+            <column name="status"/>
+            <type name="org.hibernate.type.EnumType">
+                <param name="enumClass">com.java.jsf.Provider.model.DoctorStatus</param>
+                <param name="useNamed">true</param>
+            </type>
+        </property>
+
+    </class>
+
+</hibernate-mapping>

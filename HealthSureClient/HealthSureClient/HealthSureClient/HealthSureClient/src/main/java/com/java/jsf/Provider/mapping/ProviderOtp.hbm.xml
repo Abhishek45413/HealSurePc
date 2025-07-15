@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping package="com.java.jsf.Provider.model">
+
+    <class name="ProviderOtp" table="Provider_Otp">
+
+        <id name="otpId" column="otp_id">
+            <generator class="identity"/>
+        </id>
+
+        <property name="providerId" column="provider_id" type="string"/>
+
+        <property name="otpCode" column="otp_code" type="string" not-null="true"/>
+
+        <property name="createdAt" column="created_at" type="timestamp" insert="false" update="false"/>
+
+        <property name="expiresAt" column="expires_at" type="timestamp" not-null="true"/>
+
+    </class>
+
+</hibernate-mapping>
