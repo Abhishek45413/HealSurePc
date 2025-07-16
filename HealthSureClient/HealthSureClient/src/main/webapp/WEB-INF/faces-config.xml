@@ -1,46 +1,79 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<faces-config xmlns="http://xmlns.jcp.org/xml/ns/javaee"
+<faces-config xmlns="http://java.sun.com/xml/ns/javaee"
               xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-              xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee 
-                                  http://xmlns.jcp.org/xml/ns/javaee/web-facesconfig_2_2.xsd"
-              version="2.2">
+              xsi:schemaLocation="http://java.sun.com/xml/ns/javaee 
+              http://java.sun.com/xml/ns/javaee/web-facesconfig_2_0.xsd"
+              version="2.0" metadata-complete="false">
 
+    <!-- ✅ MODEL BEANS (Provider) -->
+    <managed-bean>
+        <managed-bean-name>provider</managed-bean-name>
+        <managed-bean-class>com.java.jsf.Provider.model.Provider</managed-bean-class>
+        <managed-bean-scope>session</managed-bean-scope>
+    </managed-bean>
 
+    <!-- MODEL BEANS (ProviderOtp) -->
+    <managed-bean>
+        <managed-bean-name>providerOtp</managed-bean-name>
+        <managed-bean-class>com.java.jsf.Provider.model.ProviderOtp</managed-bean-class>
+        <managed-bean-scope>request</managed-bean-scope>
+    </managed-bean>
 
-  <!-- Managed Bean Declaration -->
-  <managed-bean>
-    <managed-bean-name>providerController</managed-bean-name>
-    <managed-bean-class>com.java.jsf.Provider.Controller.ProviderController</managed-bean-class>
-    <managed-bean-scope>request</managed-bean-scope>
-  </managed-bean>
-  
-  <managed-bean>
-    <managed-bean-name>doctors</managed-bean-name>
-    <managed-bean-class>com.java.jsf.Provider.model.Doctors</managed-bean-class>
-    <managed-bean-scope>session</managed-bean-scope>
-</managed-bean>
+    <!-- DAO BEANS -->
+    <managed-bean>
+        <managed-bean-name>providerDaoImpl</managed-bean-name>
+        <managed-bean-class>com.java.jsf.Provider.daoImpl.ProviderDaoImpl</managed-bean-class>
+        <managed-bean-scope>application</managed-bean-scope>
+    </managed-bean>
 
-  
+    <managed-bean>
+        <managed-bean-name>providerOtpDaoImpl</managed-bean-name>
+        <managed-bean-class>com.java.jsf.Provider.daoImpl.ProviderOtpDaoImpl</managed-bean-class>
+        <managed-bean-scope>application</managed-bean-scope>
+    </managed-bean>
 
-  <!-- Navigation Rules -->
-  <navigation-rule>
-    <from-view-id>/register.xhtml</from-view-id>
-    <navigation-case>
-      <from-outcome>registration_success</from-outcome>
-      <to-view-id>/success.xhtml</to-view-id>
-    </navigation-case>
-  </navigation-rule>
+    <!-- CONTROLLER -->
+    <managed-bean>
+        <managed-bean-name>providerController</managed-bean-name>
+        <managed-bean-class>com.java.jsf.Provider.Controller.ProviderController</managed-bean-class>
+        <managed-bean-scope>session</managed-bean-scope>
 
-  <navigation-rule>
-    <from-view-id>/admin.xhtml</from-view-id>
-    <navigation-case>
-      <from-outcome>dashboard</from-outcome>
-      <to-view-id>/dashboard.xhtml</to-view-id>
-    </navigation-case>
-    <navigation-case>
-      <from-outcome>provider_list</from-outcome>
-      <to-view-id>/provider_list.xhtml</to-view-id>
-    </navigation-case>
-  </navigation-rule>
+        <managed-property>
+            <property-name>provider</property-name>
+            <property-class>com.java.jsf.Provider.model.Provider</property-class>
+            <value>#{provider}</value>
+        </managed-property>
+
+        <managed-property>
+            <property-name>providerDaoImpl</property-name>
+            <property-class>com.java.jsf.Provider.daoImpl.ProviderDaoImpl</property-class>
+            <value>#{providerDaoImpl}</value>
+        </managed-property>
+
+        <managed-property>
+            <property-name>providerOtpDaoImpl</property-name>
+            <property-class>com.java.jsf.Provider.daoImpl.ProviderOtpDaoImpl</property-class>
+            <value>#{providerOtpDaoImpl}</value>
+        </managed-property>
+    </managed-bean>
+
+    <!-- ✅ OTP CONTROLLER (Optional) -->
+    <managed-bean>
+        <managed-bean-name>providerOtpController</managed-bean-name>
+        <managed-bean-class>com.java.jsf.Provider.Controller.ProviderOtpController</managed-bean-class>
+        <managed-bean-scope>request</managed-bean-scope>
+
+        <managed-property>
+            <property-name>providerOtp</property-name>
+            <property-class>com.java.jsf.Provider.model.ProviderOtp</property-class>
+            <value>#{providerOtp}</value>
+        </managed-property>
+
+        <managed-property>
+            <property-name>providerOtpDaoImpl</property-name>
+            <property-class>com.java.jsf.Provider.daoImpl.ProviderOtpDaoImpl</property-class>
+            <value>#{providerOtpDaoImpl}</value>
+        </managed-property>
+    </managed-bean>
 
 </faces-config>

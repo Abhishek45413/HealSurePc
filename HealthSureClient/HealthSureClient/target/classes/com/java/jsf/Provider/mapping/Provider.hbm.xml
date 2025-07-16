@@ -18,6 +18,7 @@
         <property name="city"/>
         <property name="state"/>
         <property name="zipcode"/>
+        <property name="password" column="password" />
         <property name="createdAt" column="created_at" type="timestamp" insert = "false" update = "false"/>
         
        <property name="status" not-null="true">

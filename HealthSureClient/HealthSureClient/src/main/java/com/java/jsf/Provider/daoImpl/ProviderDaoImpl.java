@@ -4,6 +4,7 @@ import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
+import org.hibernate.cfg.Configuration;
 
 import com.java.jsf.Provider.dao.ProviderDao;
 import com.java.jsf.Provider.model.Provider;
@@ -128,4 +129,34 @@ public class ProviderDaoImpl implements ProviderDao{
             session.close();
         }
     }
+
+	@Override
+	public boolean updatePasswordByEmail(String email, String newPassword) {
+		 Session session = null;
+	        Transaction tx = null;
+
+	        try {
+	            session = new Configuration().configure().buildSessionFactory().openSession();
+	            tx = session.beginTransaction();
+
+	            String hql = "FROM Provider WHERE email = :email";
+	            Provider provider = (Provider) session.createQuery(hql)
+	                                                  .setParameter("email", email)
+	                                                  .uniqueResult();
+
+	            if (provider != null) {
+	                provider.setPassword(newPassword);
+	                session.update(provider);
+	                tx.commit();
+	                return true;
+	            }
+	        } catch (Exception e) {
+	            if (tx != null) tx.rollback();
+	            e.printStackTrace();
+	        } finally {
+	            if (session != null) session.close();
+	        }
+
+		return false;
+	}
 }

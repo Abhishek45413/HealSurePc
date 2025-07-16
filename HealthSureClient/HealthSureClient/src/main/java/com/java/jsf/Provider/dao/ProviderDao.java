@@ -8,7 +8,7 @@ public interface ProviderDao {
     boolean emailExists(String email) throws Exception;
     boolean phoneExists(String phone) throws Exception;
     boolean zipcodeExists(String zipcode) throws Exception;
-
+    boolean updatePasswordByEmail(String email, String newPassword);
 
 
 }

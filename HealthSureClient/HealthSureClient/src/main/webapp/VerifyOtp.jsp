@@ -2,14 +2,13 @@
     pageEncoding="UTF-8"%>
 <%@taglib prefix="f" uri="http://java.sun.com/jsf/core"%>
 <%@taglib prefix="h" uri="http://java.sun.com/jsf/html"%>
-    
+
 <!DOCTYPE html>
 <f:view>
 <html>
 <head>
     <meta charset="UTF-8">
     <title>Provider OTP Verification</title>
-
     <style>
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -28,12 +27,14 @@
             border-radius: 15px;
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
             width: 400px;
+            position: relative;
         }
 
         .form-title {
             text-align: center;
             margin-bottom: 20px;
             color: #333333;
+            position: relative;
         }
 
         .form-label {
@@ -69,17 +70,36 @@
             background-color: #45a049;
         }
 
+        .resend-link {
+            display: block;
+            text-align: right;
+            margin-top: 5px;
+            font-size: 13px;
+            color: #007bb5;
+            text-decoration: underline;
+            cursor: pointer;
+        }
+
+        .error-message {
+            color: red;
+            margin-top: 5px;
+            font-size: 13px;
+        }
+
+        .info-message {
+            color: orange;
+            margin-top: 5px;
+            font-size: 13px;
+        }
+
+        .success-message {
+            color: green;
+            margin-top: 5px;
+            font-size: 13px;
+        }
+
         .form-group {
             margin-bottom: 15px;
-        }
-
-        .resend-button {
-            background-color: #008CBA;
-            margin-top: 10px;
-        }
-
-        .resend-button:hover {
-            background-color: #007bb5;
         }
     </style>
 </head>
@@ -87,34 +107,36 @@
 <body>
     <h:form>
         <div class="form-container">
-            <h2 class="form-title">Verify Otp </h2>
+            <div class="form-title">Verify OTP</div>
 
-            <h:messages globalOnly="true" layout="table" />
-
+            <!-- ✅ Provider ID input -->
             <div class="form-group">
-                <h:outputLabel for="email" value="Email ID:" styleClass="form-label" />
-                <h:inputText id="email" value="#{providerController.provider.email}" styleClass="form-input" required="true" />
+                <h:outputLabel for="providerId" value="Provider ID:" styleClass="form-label" />
+                <h:inputText id="providerId" value="#{providerController.providerId}" styleClass="form-input" required="true" />
+                <h:message for="providerId" styleClass="error-message" />
             </div>
 
+            <!-- ✅ OTP input -->
             <div class="form-group">
                 <h:outputLabel for="otp" value="OTP Code:" styleClass="form-label" />
                 <h:inputText id="otp" value="#{providerController.otpCode}" styleClass="form-input" required="true" />
+                <h:message for="otp" styleClass="error-message" />
+
+                <!-- ✅ Messages -->
+                <h:messages globalOnly="true" layout="list" styleClass="error-message" />
+
+                <!-- ✅ Resend OTP -->
+                <h:commandLink action="#{providerController.resendOtp}" value="Resend OTP?" styleClass="resend-link" />
             </div>
 
+            <!-- ✅ Verify Button -->
             <div class="form-group">
                 <h:commandButton 
-                    value="Submit OTP" 
-                    action="#{providerController.verifyOtp(providerController.provider.email, providerOtp.otpCode)}" 
+                    value="Verify OTP" 
+                    action="#{providerController.verifyOtp}" 
                     styleClass="submit-button" />
             </div>
 
-            <div class="form-group">
-                <h:commandButton 
-                    value="Resend OTP" 
-                    action="#{providerController.resendOtp}" 
-                    immediate="true" 
-                    styleClass="submit-button resend-button" />
-            </div>
         </div>
     </h:form>
 </body>

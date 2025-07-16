@@ -2,8 +2,10 @@ package com.java.jsf.Provider.Controller;
 
 import java.sql.SQLException;
 
+import javax.faces.application.FacesMessage;
+import javax.faces.context.FacesContext;
+
 import com.java.jsf.Provider.dao.ProviderOtpDao;
-import com.java.jsf.Provider.daoImpl.ProviderDaoImpl;
 import com.java.jsf.Provider.daoImpl.ProviderOtpDaoImpl;
 import com.java.jsf.Provider.model.ProviderOtp;
 
@@ -35,13 +37,34 @@ public class ProviderOtpController {
     // ✅ Method to Verify OTP
     public String verifyOtp() {
         try {
-            message = providerOtpDao.verifyOtp(providerId, otpCode);
+            System.out.println("Controller: Verifying OTP");
+            System.out.println("providerId = " + providerId);
+            System.out.println("otpCode = " + otpCode);
+
+            if (providerId == null || otpCode == null) {
+                message = "Missing provider ID or OTP.";
+                return null;
+            }
+
+            // Trim inputs before passing to DAO
+            message = providerOtpDao.verifyOtp(providerId.trim(), otpCode.trim());
+            System.out.println("Verification message = " + message);
+
         } catch (ClassNotFoundException | SQLException e) {
             e.printStackTrace();
             message = "Error verifying OTP: " + e.getMessage();
+            return null;
         }
-        return "OtpVerified";  // Navigation outcome
+
+        if (message.contains("successfully")) {
+            return "OtpVerified";  // ✅ OTP verified → Go to success page
+        } else {
+            FacesContext.getCurrentInstance().addMessage(null,
+                new FacesMessage(FacesMessage.SEVERITY_ERROR, message, null));
+            return null;
+        }
     }
+
 
     // ✅ Method to Get Latest OTP for Provider
     public String getLatestOtp() {
